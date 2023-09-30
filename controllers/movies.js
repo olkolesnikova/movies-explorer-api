@@ -67,7 +67,7 @@ const deleteSavedMovie = (req, res, next) => {
       if (!movie.owner.equals(req.user._id)) {
         throw new ForbiddenError('Нельзя удалять фильмы других пользователей');
       }
-      Movie.deleteOne()
+      Movie.deleteOne(movie)
         .then(() => {
           res.send({ message: 'Фильм успешно удален' });
         })

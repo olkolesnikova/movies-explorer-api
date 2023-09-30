@@ -8,6 +8,9 @@ const cors = require('cors');
 const userRouter = require('./routes/users');
 const movieRouter = require('./routes/movies');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const errorHandler = require('./middlewares/error-handler');
+const NotFoundError = require('./errors/not-found-error');
+const limiter = require('./middlewares/rate-limeter');
 
 const { PORT = 3000, DB_URL = 'mongodb://127.0.0.1:27017/bitfilmsdb' } = process.env;
 
@@ -46,18 +49,17 @@ app.get('/signout', (req, res) => {
   res.clearCookie('jwt').send({ message: 'Выход' });
 });
 
+app.use('*', (req, res, next) => {
+  next(new NotFoundError('Страница не найдена'));
+});
+
 app.use(errorLogger);
 
 app.use(errors());
 
-app.use((err, req, res, next) => {
-  const { statusCode = 500, message } = err;
+app.use(errorHandler);
 
-  res.status(statusCode).send({
-    message: statusCode === 500 ? 'На сервере произошла ошибка' : message,
-  });
-  next();
-});
+app.use(limiter);
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);

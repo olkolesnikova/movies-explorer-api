@@ -80,22 +80,28 @@ const getUserInfo = (req, res, next) => {
 const updateUserInfo = (req, res, next) => {
   const { name, email } = req.body;
 
-  return User.findByIdAndUpdate(req.user._id, { name, email }, {
-    new: true,
-    runValidators: true,
-  })
-    .orFail(new NotFoundError('Пользователь не найден'))
-    .then((user) => {
-      res.send(user);
-    })
-    .catch((err) => {
-      console.log(err);
-      if (err instanceof mongoose.Error.ValidationError) {
-        next(new InvalidDataError('Неверные данные'));
-      } else {
-        next(err);
+  return User.findOne({ email })
+    .then((data) => {
+      if (data) {
+        throw new ExistingDataError('Пользователь с таким Email уже зарегистрирован');
       }
-    });
+      User.findByIdAndUpdate(req.user._id, { name, email }, {
+        new: true,
+        runValidators: true,
+      })
+        .then(() => {
+          res.send({ message: 'Данные успешно обновлены' });
+        })
+        .catch((err) => {
+          console.log(err);
+          if (err instanceof mongoose.Error.ValidationError) {
+            next(new InvalidDataError('Неверные данные'));
+          } else {
+            next(err);
+          }
+        });
+    })
+    .catch(next);
 };
 
 module.exports = {
