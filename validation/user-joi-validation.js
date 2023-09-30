@@ -17,7 +17,7 @@ const registrationValidation = celebrate({
 
 const userInfoValidation = celebrate({
   params: Joi.object().keys({
-    userId: Joi.string().required().length(24),
+    _id: Joi.string().required().length(24),
   }),
 });
 
