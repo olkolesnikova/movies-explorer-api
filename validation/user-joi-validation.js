@@ -15,12 +15,6 @@ const registrationValidation = celebrate({
   }),
 });
 
-const userInfoValidation = celebrate({
-  params: Joi.object().keys({
-    _id: Joi.string().required().length(24),
-  }),
-});
-
 const updateUserInfoValidation = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
