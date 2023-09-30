@@ -14,12 +14,11 @@ const createMovie = (req, res, next) => {
     year,
     description,
     image,
-    trailer,
+    trailerLink,
     nameRU,
     nameEN,
     thumbnail,
     movieId,
-    trailerLink,
   } = req.body;
   console.log(req.body);
 
