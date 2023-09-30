@@ -25,6 +25,5 @@ const updateUserInfoValidation = celebrate({
 module.exports = {
   loginValidation,
   registrationValidation,
-  userInfoValidation,
   updateUserInfoValidation,
 };
