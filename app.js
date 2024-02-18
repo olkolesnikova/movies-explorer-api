@@ -25,8 +25,9 @@ const corsOptions = {
   origin: [
     'https://api.movies-collection.nomoredomainsrocks.ru',
     'https://movies-collection.nomoredomainsrocks.ru',
-    'localhost:3001',
-    'localhost:3000',
+    'http://localhost:3001',
+    'http://localhost:3002',
+    'https://api.nomoreparties.co/beatfilm-movies',
   ],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
